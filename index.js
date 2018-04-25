@@ -1,46 +1,28 @@
-function sum(a, b) {
-  return a + b
-}
+const Koa = require('koa')
+const KoaRouter = require('koa-router')
+const render = require('koa-ejs')
+const mount = require('koa-mount')
+const serve = require('koa-static')
 
-const multiply = function(a, b) {
-  return a * b
-}
+const app = new Koa()
+const router = KoaRouter()
 
-const divide = (a, b) => {
-  return a / b
-}
 
-const subtrakt = (a, b) => a - b
+const notfound = require('./middleware/notfound')
 
-class Person {
-  constructor(name, age) {
-    this.name = name
-    this.age = age
-  }
+app.use(mount('/assets', serve('assets')))
 
-  greet() {
-    console.log(`hello my name is ${this.name}, I am ${this.age} years old`);
-  }
+render(app, {
+  root: 'templates',
+  layout: 'layout',
+  viewExt: 'ejs'
+})
 
-  setAge(newAge) {
-    this.age = newAge
-  }
-}
+router.get('/', async (ctx, next) => {
+  await ctx.render('layout')
+})
 
-class OldPerson extends Person {
-  greet() {
-    console.log(`hello my name is ${this.name}, I am ${this.age*2} years old`);
-  }
-}
+app.use(router.routes())
+// app.use(notfound)
 
-module.exports = {
-  sum,
-  multiply,
-  divide,
-  subtrakt,
-  power(a) {
-    return a*a
-  },
-  Person,
-  OldPerson
-}
+app.listen(3000)
