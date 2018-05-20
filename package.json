@@ -12,6 +12,7 @@
     "jest": "^22.4.3"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "koa": "^2.5.0",
     "koa-ejs": "^4.1.1",
     "koa-mount": "^3.0.0",
